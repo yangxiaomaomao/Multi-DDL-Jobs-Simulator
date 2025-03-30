@@ -23,7 +23,7 @@ DdlJFP::DdlJFP(map<uint32_t, vector<string>> jobUseLinkId,
     constructJobsFlowsInfoMatrix();
     // int solveRes = solveMatrix();
     // if (solveRes == -1)
-    // {
+    // { 
     //     cout << "solve matrix failed" << endl;
     //     exit(0);
     // }
