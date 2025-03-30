@@ -57,9 +57,10 @@ class DdlAppManager
     void adaptJobsFlowTosCrux();
     void adaptJobsFlowTosEqual();
     void adaptJobsFlowTosJFP();
+    
 
     void startPythonSolver(bool cruxPlus)
-    {
+    { 
         // start the python solver by the port
         string solverPath;
         if (cruxPlus)
