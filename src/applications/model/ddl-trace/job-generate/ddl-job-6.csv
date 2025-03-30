@@ -1,0 +1,2 @@
+job_id,arrive_time,iter_num,worker_num,flowId,comp_time,comm_size,first_flow,last_flow,upstream,downstream
+2,8,8,2,0,20,70,true,true,"0","0"
