@@ -89,12 +89,59 @@ def start_server(port):
 
 if __name__ == "__main__":
     port = int(sys.argv[1])
-    start_server(port)
+    # start_server(port)
     
-    test = 0
+    test = 1
     if test:
-        I = np.array([
-            [[0,0]]
-        ])
-        crux_mcts_P, crux_mcts_reward = baseline.crux_plus(I)
-        print(crux_mcts_P)
+        for i in range(1000):
+            if i % 50 == 0:
+                print_color("test %d" % i, "yellow")
+            x1 = np.random.randint(2, 6)
+            x2 = np.random.randint(10, 20)
+            
+            x3 = np.random.randint(2, 6)
+            x4 = np.random.randint(10, 20)
+            
+            x5 = np.random.randint(2, 6)
+            x6 = np.random.randint(10, 20)
+            
+            x7 = np.random.randint(2, 6)
+            x8 = np.random.randint(10, 20)
+            
+            x9 = np.random.randint(10, 20)
+            x10 = np.random.randint(100, 200)
+            I = np.array([
+                [[x1,x2],[0,1], [x1, x2],[0, 3]],
+                [[0,0],[0,0], [x7, x8],[0, 1]],
+                [[0,0],[0,0], [x5, x6]  ,[0, 0]],
+                # [[0,  0],[0,0], [0, 0]  ,[20, 70]],
+            ])
+            
+            # print("JFP Solver")
+            crux_mcts_P, crux_mcts_reward, mcts_jobs_res = baseline.crux_mcts(I)
+            # print("crux+ Solver")
+            crux_plus_P, crux_plus_reward, plus_jobs_res = baseline.crux_plus(I)
+            
+            plus_jobs_res_np = np.array(plus_jobs_res)
+            mcts_jobs_res_np = np.array(mcts_jobs_res)
+            
+            improve_crux_plus = (crux_plus_reward - crux_mcts_reward) / crux_mcts_reward
+
+            max_improve = (plus_jobs_res_np.max() - mcts_jobs_res_np.max()) / plus_jobs_res_np.max()
+            # print("crux+ reward is", improve_crux)
+            # print("crux reward is", crux_reward)
+            if max_improve > 0.15:
+                print("*" * 30)
+                print("max_improve:", max_improve)
+                print("improve_crux_plus:", improve_crux_plus)
+                # print("plus_jobs_res", plus_jobs_res)
+                # print("mcts_jobs_res", mcts_jobs_res)
+                # print("enhance_list",enhance_list)
+                # print("crux mcts reward is not equal to crux+ reward")
+                # print("crux mcts reward is", crux_mcts_reward)
+                # print("crux+ reward is", crux_plus_reward)
+                # print("crux+ jobs_res", plus_jobs_res)
+                # print("crux mcts jobs_res", mcts_jobs_res)
+                # pprint(I)
+                # print("crux+ P", crux_plus_P)
+                # print("mcts P", crux_mcts_P)

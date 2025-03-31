@@ -23,9 +23,9 @@ class Node:
         self.id = node_id
         node_id += 1
 
-    def get_legal_actions(self):
+    def get_legal_actions(self, evaluate=False):
         # has been computed
-        if self.reward != -1:
+        if self.reward != -1 and not evaluate:
             return self.legal_actions
         I = copy.deepcopy(self.I)
         P = copy.deepcopy(self.P)
@@ -148,6 +148,8 @@ class Node:
             assert len(prio_to_inc_indices_list) == len(prio_to_dec_indices_list)
             
         res = np.sum(Y/initial_Y) / J
+        if evaluate:
+            return Y/initial_Y
         
         global global_reward_list
         global_reward_list.append(res)

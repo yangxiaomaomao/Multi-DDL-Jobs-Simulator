@@ -10,6 +10,10 @@ import seaborn as sns
 from tools import plot_accu_change
 max_epochs = 10
 
+def evaluate(node:Node):
+    mcts = MCTS(node)
+    reward = mcts.run(0, True)
+    return reward
 def crux_plus(I:np.array):
     global max_epochs
     J, L, _ = np.shape(I)
@@ -32,9 +36,10 @@ def crux_plus(I:np.array):
     node = Node([], I, P, max_epochs, -1, parent=None)
 
     node.get_legal_actions()
+    jobs_res = evaluate(node)
     # print("crux+ reward is",node.reward)
     #print(P)
-    return P, node.reward
+    return P, node.reward, [x[0] for x in jobs_res.tolist()]
 
 def crux(I:np.array):
     global max_epochs
@@ -51,9 +56,9 @@ def crux(I:np.array):
     node = Node([], I, P, max_epochs, -1, parent=None)
 
     node.get_legal_actions()
-    print("crux reward is",node.reward)
     # print(P)
     return P, node.reward
+
 
 def crux_mcts(I:np.array):
     global max_epochs
@@ -63,14 +68,14 @@ def crux_mcts(I:np.array):
     
     J, L, _ = np.shape(I)
     # init_P = np.tile(np.arange(J), (L, 1)).T
-    init_P, _ = crux_plus(I)
+    init_P, _, _ = crux_plus(I)
 
     root = Node(initial_state, I, init_P, max_epochs, max_child, parent=None)
-
     mcts = MCTS(root)
     mcts.run(iterations)
     
     min_reward_node, max_reward_node = traverse(root)
+    jobs_res = evaluate(min_reward_node)
     
     # plot_accu_change(global_reward_list)
     
@@ -78,21 +83,5 @@ def crux_mcts(I:np.array):
         for link_index,link in enumerate(job):
             if np.all(I[job_index][link_index] == 0):
                 min_reward_node.P[job_index][link_index] = 0
-                
-    return min_reward_node.P, min_reward_node.reward
     
-    
-# P1 = np.array([
-#     [4, 4, 4],
-#     [3, 3, 3],
-#     [2, 2, 2],
-#     [1, 1, 1],
-#     [0, 0, 0],
-# ])
-# P_test = np.array(
-# [
-#     [1,0],
-#     [2,1],
-#     [0,2]
-# ]
-# )
+    return min_reward_node.P, min_reward_node.reward, [x[0] for x in jobs_res.tolist()]

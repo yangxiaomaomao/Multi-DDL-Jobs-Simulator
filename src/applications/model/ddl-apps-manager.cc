@@ -275,15 +275,10 @@ DdlAppManager::loadBalancePlacement(DdlApplication* job)
             }
         }
     }
-
+    uint32_t jobId = job->getJobId();
     if(tmp.size() == 1){
         tmp = {tmp[0], tmp[0]};
     }
-    // if(jobId == 6){
-    //     tmp = {21,15,9,3,19,13,7,1};
-    // }else if(jobId == 8){
-    //     tmp = {2,20,14,8};
-    // }
     vector<uint32_t> gpuIndex = duplicateMiddleElements(tmp);
     return gpuIndex;
 }

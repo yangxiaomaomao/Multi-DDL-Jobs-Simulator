@@ -34,11 +34,13 @@ class MCTS:
                 node.children.append(child)
         return node.children[0]
 
-    def simulate(self, node):
+    def simulate(self, node:Node, evaluate=False):
         """模拟从当前节点到终止状态"""
         current = node
         # while not current.is_terminal():
-        current.get_legal_actions()
+        if evaluate:
+            return current.get_legal_actions(evaluate=evaluate)
+        current.get_legal_actions(evaluate=evaluate)
         
         return current.reward
 
@@ -50,8 +52,11 @@ class MCTS:
             node.value += reward
             node = node.parent
 
-    def run(self, iterations):
+    def run(self, iterations, evaluate=False):
         """运行 MCTS"""
+        if evaluate:
+            reward = self.simulate(self.root, evaluate=evaluate)
+            return reward
         for iter_cnt in range(iterations):
             # print("=" * 30, "iteration %d" % iter_cnt, "=" * 30)
             node = self.root
